@@ -3,7 +3,16 @@
 require 'simplecov'
 ENV['RAILS_ENV'] ||= 'test'
 
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  %w[base_argument.rb base_enum.rb base_field.rb base_input_object.rb base_interface.rb base_object.rb base_scalar.rb base_union.rb].each do |filename|
+    add_filter "/app/graphql/types/#{filename}" 
+  end
+  add_filter "/app/graphql/mutations/base_mutation.rb"
+  add_filter "/app/controllers/graphql_controller.rb"
+end
+
+require 'rspec/graphql_matchers'
+include RSpec::GraphqlMatchers::TypesHelper
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
