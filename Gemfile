@@ -13,9 +13,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 
 group :development, :test do
-  gem 'ffaker'
   gem 'pry-rails'
-  gem 'rspec-rails', '~> 3.5'
 end
 
 group :development do
@@ -26,6 +24,9 @@ group :development do
 end
 
 group :test do
+  gem 'factory_bot_rails'
+  gem 'ffaker'
+  gem 'rspec-rails', '~> 3.5'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false, group: :test
 end
