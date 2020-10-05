@@ -9,6 +9,8 @@ SimpleCov.start 'rails' do
   end
   add_filter "/app/graphql/mutations/base_mutation.rb"
   add_filter "/app/controllers/graphql_controller.rb"
+  add_filter "/app/controllers/concerns/rescue_error.rb"
+  add_filter "/app/lib/stoia_exceptions.rb"
 end
 
 require 'rspec/graphql_matchers'

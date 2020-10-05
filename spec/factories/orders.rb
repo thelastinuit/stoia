@@ -1,0 +1,8 @@
+FactoryBot.define do
+  factory :order do
+    shop
+    subtotal { 0.0 }
+    total { 0.0 }
+    tax { 0.0 }
+  end
+end

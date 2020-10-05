@@ -14,5 +14,15 @@ module Seeder
     end
     shop
   end
+
+  def init_order(shop: nil)
+    shop = shop || Seeder.init_shop
+    order = FactoryBot.create :order, shop: shop
+    product_variants = shop.product_variants.limit(3)
+    product_variants.each do |product_variant|
+      FactoryBot.create :line_item, unit_price: product_variant.unit_price, quantity: 1, product_variant_id: product_variant.id
+    end
+    order
+  end
 end
 
