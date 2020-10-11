@@ -1,0 +1,69 @@
+version: "3.7"
+
+networks:
+  backend:
+
+services:
+  # The migration processor container - we'll use this as the base for the rest
+  # of the app service definitions:
+  migration: &app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        DEVELOPER_UID: ${UID:-1000}
+        DEVELOPER_USERNAME: ${USER:-you}
+    image: thelastinuit/stoia:development
+    entrypoint: /usr/src/bin/dev-entrypoint.sh
+    volumes:
+      # Mount the app code into the app containers at the "/usr/src" folder:
+      - .:/usr/src
+    networks:
+      - backend
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+    # Link to our postgres and redis services, so they can be visible from our
+    # app service containers:
+    depends_on:
+      - postgres
+    # The command we want to execute by default when running the container
+    command: bundle exec rails db:migrate
+    # Specify environment variables available for our app containers. We'll
+    # leave a YML anchor in case we need to override or add more variables if
+    # needed on each app service:
+    environment: &app_environment
+      # We'll set the DATABASE_URL environment variable for the app to connect
+      # to our postgres container - no need to use a 'config/database.yml' file.
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/
+
+      # We'll set the RAILS_ENV and RACK_ENV environment variables to
+      # 'development', so our app containers will start in 'development' mode
+      # on this compose project:
+      RAILS_ENV: development
+      RACK_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+
+  web:
+    <<: *app
+    command: bundle exec rails server -p 3000 -b 0.0.0.0
+    ports:
+      - ${STOIA_WEB_PORT:-3000}:3000
+    depends_on:
+      - postgres
+    environment:
+      <<: *app_environment
+
+  test:
+    <<: *app
+    command: bundle exec rspec
+    ports:
+      - ${STOIA_WEB_PORT:-3001}:3001
+    environment:
+      <<: *app_environment
+      RAILS_ENV: test
+      RACK_ENV: test
+
