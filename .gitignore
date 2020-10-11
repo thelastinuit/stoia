@@ -25,3 +25,6 @@
 
 # Ignore simplecov results
 /coverage/**/*
+
+# Ignore bash history
+.bash_history
