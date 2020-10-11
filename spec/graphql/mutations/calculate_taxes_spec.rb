@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Mutations::CalculateTaxes, type: :mutation do
@@ -5,23 +7,24 @@ describe Mutations::CalculateTaxes, type: :mutation do
 
   before do
     query mutation_string,
-      variables: {
-        shop_id: shop.id,
-        amounts: [3.14, 6.28]
-      },
-      context: { current_shop: shop }
+          variables: {
+            shop_id: shop.id,
+            amounts: [3.14, 6.28]
+          },
+          context: { current_shop: shop }
   end
 
-  describe "Get taxed amounts" do
-    let(:mutation_string) { %q(mutation calculateTaxes($shopId: Int, $amounts: [Float]) {
+  describe 'Get taxed amounts' do
+    let(:mutation_string) do
+      'mutation calculateTaxes($shopId: Int, $amounts: [Float]) {
                                  calculateTaxes(input: {
                                    shopId: $shopId
                                    amounts: $amounts
                                  }) {
                                    taxedAmount
                                  }
-                              })
-    }
+                              }'
+    end
 
     it 'should not return errors' do
       expect(graphql_response.errors).to be_blank

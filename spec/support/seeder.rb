@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Seeder
   module_function
 
@@ -16,7 +18,7 @@ module Seeder
   end
 
   def init_order(shop: nil)
-    shop = shop || Seeder.init_shop
+    shop ||= Seeder.init_shop
     order = FactoryBot.create :order, shop: shop
     product_variants = shop.product_variants.limit(3)
     product_variants.each do |product_variant|
@@ -25,4 +27,3 @@ module Seeder
     order
   end
 end
-

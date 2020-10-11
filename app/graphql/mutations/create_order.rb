@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Mutations
   class CreateOrder < Mutations::BaseMutation
+    description 'Create an order record based on product variants'
     argument :shop_id, Int, required: true
     argument :product_variants, [Types::OrderProductVariantInputType], required: true
 
@@ -15,4 +18,3 @@ module Mutations
     end
   end
 end
-

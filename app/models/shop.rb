@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Represents a Shop
 # Shops can be from the same country however through the Location model, inventory can be *located* in diff countries.
 class Shop < ApplicationRecord
