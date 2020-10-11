@@ -1,14 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe GraphqlController, type: :controller do
-  describe "#execute" do
+  describe '#execute' do
     let!(:shop) { Seeder.init_shop }
-    let(:query_string) { %Q( query {
+    let(:query_string) do
+      %( query {
                                shop(id: #{shop.id}) {
                                  domain
                                }
                              })
-    }
+    end
 
     before do
       post :execute, params: { query: query_string }
@@ -23,4 +26,3 @@ describe GraphqlController, type: :controller do
     end
   end
 end
-

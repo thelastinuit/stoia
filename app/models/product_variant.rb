@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Represents a Product Variant
 # Product Variants is a product variant of a product. Product Variant may have inventory in diff locations
 class ProductVariant < ApplicationRecord

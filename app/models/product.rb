@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Represents a Product
 # Products can have multiple variants. Variants are the item that are actually sold based on inventory.
 class Product < ApplicationRecord

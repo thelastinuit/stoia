@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Graphql
   module TestHelpers
     attr_accessor :graphql_response
@@ -17,11 +19,11 @@ module Graphql
     # Query to interact with the GraphQL API.
     # @param [query] required The query string that would be passed to the schema.
     def query(query, variables: {}, context: {})
-      converted = variables.deep_transform_keys! {|key| key.to_s.camelize(:lower)} || {}
+      converted = variables.deep_transform_keys! { |key| key.to_s.camelize(:lower)} || {}
       response = StoiaSchema.execute(query, variables: converted, context: context, operation_name: nil)
       @graphql_response = GraphqlResponse.new(response.to_h)
     end
 
-    alias_method :mutation, :query
+    alias mutation query
   end
 end
